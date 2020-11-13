@@ -3,6 +3,7 @@ package com.ndogga.cicoffe.model.repository;
 import com.ndogga.cicoffe.model.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -13,5 +14,5 @@ import java.util.UUID;
 
 
 public interface MemberRepository extends JpaRepository<Member, UUID> {
-
+  Optional<Member> findByEmail(String email);
 }

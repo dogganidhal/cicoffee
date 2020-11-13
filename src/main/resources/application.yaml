@@ -9,3 +9,11 @@ spring:
     initialization-mode: never
   flyway:
     locations: classpath:/db/migration
+
+
+cicoffee:
+  auth:
+    jwt:
+      expires-in: 3600
+      refresh-token-expires-in: 182
+      signing-key: W4c3EPAGUnUZqVIQwbaIMJHly9Cdp_66vKgKxL_n9oK2HOg98dNCNclhMID2wqBdY3A7YtAh01wpUjPXZ6PMocmPi67G932WAj_tNFb7QTOO5IZSqGaUKVw7Mpl_IDDFMNcUKASCfpyZs9sM4rM2cTDtDr7Mv1ibCjkdbyEG5Q6_R6crf41FhLlqQuSjnETEvhZoktDmAuU1J_ikpy-9vbQ55y80I5v279hf6YDIy0027EmCFoUteR4KfYeRKTPA7eOdly3biQgGZXtInF5gOiwbZKkFJ5EFulT2QtIne35YBQENeE5OQ0mDILnZb0uTdMcJTUhQ6H7c2NpJNO4NEA
