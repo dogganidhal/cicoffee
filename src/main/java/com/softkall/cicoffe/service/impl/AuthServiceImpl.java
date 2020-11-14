@@ -10,8 +10,10 @@ import com.softkall.cicoffe.model.repository.RefreshTokenRepository;
 import com.softkall.cicoffe.service.AuthService;
 import com.softkall.cicoffe.web.dto.input.LoginDto;
 import com.softkall.cicoffe.web.dto.output.TokenDto;
+import com.sun.istack.Nullable;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,9 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public UUID decodeJwt(String token) {
-    return UUID.fromString(parseJwt(token).getBody().getSubject());
+    return parseJwt(token)
+            .map(jwt -> UUID.fromString(jwt.getBody().getSubject()))
+            .orElse(null);
   }
 
   @Override
@@ -61,10 +65,8 @@ public class AuthServiceImpl implements AuthService {
     refreshTokenRepository
             .findById(token)
             .orElseThrow(NotFoundException::new);
-    Jws<Claims> claims = parseJwt(token);
-    if (claims == null) {
-      throw new InvalidCredentialsException();
-    }
+    Jws<Claims> claims = parseJwt(token)
+            .orElseThrow(InvalidCredentialsException::new);
     return generateToken(UUID.fromString(claims.getBody().getSubject()));
   }
 
@@ -100,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
     Optional<RefreshToken> refreshToken = refreshTokenRepository
             .findAllByMemberId(memberId)
             .stream()
-            .filter(token -> parseJwt(token.getToken()) != null)
+            .filter(token -> parseJwt(token.getToken()).isPresent())
             .findAny();
     if (refreshToken.isEmpty()) {
       refreshToken = Optional.of(refreshTokenRepository.save(
@@ -115,11 +117,15 @@ public class AuthServiceImpl implements AuthService {
     return refreshToken.get().getToken();
   }
 
-  private Jws<Claims> parseJwt(String jwt) {
-    JwtParser jwtParser = Jwts.parserBuilder()
-            .setSigningKey(Keys.hmacShaKeyFor(jwtConfiguration.getSigningKey().getBytes()))
-            .build();
-    return jwtParser.parseClaimsJws(jwt);
+  private Optional<Jws<Claims>> parseJwt(String jwt) {
+    try {
+      JwtParser jwtParser = Jwts.parserBuilder()
+              .setSigningKey(Keys.hmacShaKeyFor(jwtConfiguration.getSigningKey().getBytes()))
+              .build();
+      return Optional.of(jwtParser.parseClaimsJws(jwt));
+    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException throwable) {
+      return Optional.empty();
+    }
   }
 
 }

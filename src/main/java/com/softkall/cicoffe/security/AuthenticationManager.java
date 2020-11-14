@@ -1,5 +1,6 @@
 package com.softkall.cicoffe.security;
 
+import com.softkall.cicoffe.exception.InvalidCredentialsException;
 import com.softkall.cicoffe.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -29,11 +30,14 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
   public Mono<Authentication> authenticate(Authentication authentication) {
     String token = authentication.getCredentials().toString();
     UUID memberId = authService.decodeJwt(token);
+    if (memberId == null) {
+      throw new InvalidCredentialsException();
+    }
     Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
             memberId.toString(),
             null,
             Collections.emptyList()
-    );
+    );;
     return Mono.just(authenticationToken);
   }
 

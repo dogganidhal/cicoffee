@@ -1,7 +1,6 @@
 package com.softkall.cicoffe.security;
 
 import com.softkall.cicoffe.exception.ApiException;
-import com.softkall.cicoffe.exception.InternalServerException;
 import com.softkall.cicoffe.exception.InvalidCredentialsException;
 import com.softkall.cicoffe.web.dto.output.ExceptionDto;
 import com.softkall.cicoffe.web.utils.DataBufferWriter;
