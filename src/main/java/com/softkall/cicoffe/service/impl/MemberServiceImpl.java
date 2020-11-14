@@ -1,5 +1,6 @@
 package com.softkall.cicoffe.service.impl;
 
+import com.softkall.cicoffe.exception.NotFoundException;
 import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.repository.MemberRepository;
 import com.softkall.cicoffe.service.MemberService;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 /**
  * @author Nidhal Dogga
- * @since 11/13/2020 10:48 PM
+ * @created 11/13/2020 10:48 PM
  * SoftKall™ All rights reserved.
  */
 
@@ -46,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
   public MemberDto me(UUID memberId) {
     Member member = memberRepository
             .findById(memberId)
-            .orElseThrow(IllegalStateException::new);
+            .orElseThrow(NotFoundException::new);
     return MemberDto.builder()
             .id(member.getId())
             .email(member.getEmail())

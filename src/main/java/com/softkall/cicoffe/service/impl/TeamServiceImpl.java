@@ -1,5 +1,7 @@
 package com.softkall.cicoffe.service.impl;
 
+import com.softkall.cicoffe.exception.ForbiddenException;
+import com.softkall.cicoffe.exception.NotFoundException;
 import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.Team;
 import com.softkall.cicoffe.model.repository.MemberRepository;
@@ -18,7 +20,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Nidhal Dogga
- * @since 11/13/2020 10:18 PM
+ * @created 11/13/2020 10:18 PM
  * SoftKall™ All rights reserved.
  */
 
@@ -41,36 +43,52 @@ public class TeamServiceImpl implements TeamService {
             .members(Collections.singletonList(author))
             .build()
     );
-    return teamDto(team);
+    return TeamDto.from(team);
   }
 
   @Override
   public TeamDto addMember(UUID authorId, UUID memberId, UUID teamId) {
     Team team = teamRepository
             .findById(teamId)
-            .orElseThrow(IllegalAccessError::new);
+            .orElseThrow(NotFoundException::new);
     boolean userInTeam = team.getMembers().stream()
             .anyMatch(member -> member.getId().equals(authorId));
     if (!userInTeam) {
-      throw new IllegalArgumentException();
+      throw new ForbiddenException();
     }
     Member member = memberRepository
             .findById(memberId)
             .orElseThrow(IllegalAccessError::new);
     team.getMembers().add(member);
-    return teamDto(teamRepository.save(team));
+    return TeamDto.from(teamRepository.save(team));
   }
 
   @Override
   public TeamDto joinTeam(UUID memberId, UUID teamId) {
     Team team = teamRepository
             .findById(teamId)
-            .orElseThrow(IllegalAccessError::new);
-    Member member = memberRepository
-            .findById(memberId)
-            .orElseThrow(IllegalAccessError::new);
-    team.getMembers().add(member);
-    return teamDto(teamRepository.save(team));
+            .orElseThrow(NotFoundException::new);
+
+    boolean memberAlreadyInTeam = team.getMembers().stream()
+            .anyMatch(m -> m.getId().equals(memberId));
+    if (!memberAlreadyInTeam) {
+      Member member = memberRepository
+              .findById(memberId)
+              .orElseThrow(NotFoundException::new);
+      team.getMembers().add(member);
+      team = teamRepository.save(team);
+    }
+    return TeamDto.from(team);
+  }
+
+  @Override
+  public TeamDto leaveTeam(UUID memberId, UUID teamId) {
+    Team team = teamRepository
+            .findById(teamId)
+            .orElseThrow(NotFoundException::new);
+    team.getMembers()
+            .removeIf(m -> m.getId().equals(memberId));
+    return TeamDto.from(teamRepository.save(team));
   }
 
   @Override
@@ -78,25 +96,8 @@ public class TeamServiceImpl implements TeamService {
     return teamRepository
             .findAllByMembers_Id(memberId)
             .stream()
-            .map(TeamServiceImpl::teamDto)
+            .map(TeamDto::from)
             .collect(Collectors.toList());
-  }
-
-  private static TeamDto teamDto(Team team) {
-    return TeamDto.builder()
-            .id(team.getId())
-            .name(team.getName())
-            .members(team.getMembers().stream()
-                    .map(member -> MemberDto.builder()
-                            .id(member.getId())
-                            .email(member.getEmail())
-                            .firstName(member.getFirstName())
-                            .lastName(member.getLastName())
-                            .build()
-                    )
-                    .collect(Collectors.toList())
-            )
-            .build();
   }
 
 }

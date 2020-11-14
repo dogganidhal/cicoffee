@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 
 /**
  * @author Nidhal Dogga
- * @since 11/13/2020 11:08 PM
+ * @created 11/13/2020 11:08 PM
  * SoftKall™ All rights reserved.
  */
 

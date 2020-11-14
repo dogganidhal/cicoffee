@@ -1,6 +1,8 @@
 package com.softkall.cicoffe.service.impl;
 
 import com.softkall.cicoffe.configuration.properties.JwtConfigurationProperties;
+import com.softkall.cicoffe.exception.InvalidCredentialsException;
+import com.softkall.cicoffe.exception.NotFoundException;
 import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.RefreshToken;
 import com.softkall.cicoffe.model.repository.MemberRepository;
@@ -24,7 +26,7 @@ import java.util.UUID;
 
 /**
  * @author Nidhal Dogga
- * @since 11/13/2020 11:02 PM
+ * @created 11/13/2020 11:02 PM
  * SoftKall™ All rights reserved.
  */
 
@@ -47,9 +49,9 @@ public class AuthServiceImpl implements AuthService {
   public TokenDto login(LoginDto request) {
     Member member = memberRepository
             .findByEmail(request.getEmail())
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(NotFoundException::new);
     if (!passwordEncoder.matches(request.getPassword(), member.getPasswordHash())) {
-      throw new IllegalArgumentException();
+      throw new InvalidCredentialsException();
     }
     return generateToken(member.getId());
   }
@@ -58,10 +60,10 @@ public class AuthServiceImpl implements AuthService {
   public TokenDto refresh(String token) {
     refreshTokenRepository
             .findById(token)
-            .orElseThrow(IllegalStateException::new);
+            .orElseThrow(NotFoundException::new);
     Jws<Claims> claims = parseJwt(token);
     if (claims == null) {
-      throw new IllegalArgumentException();
+      throw new InvalidCredentialsException();
     }
     return generateToken(UUID.fromString(claims.getBody().getSubject()));
   }
@@ -106,7 +108,7 @@ public class AuthServiceImpl implements AuthService {
                       .token(issueJwt(memberId, expiration))
                       .member(memberRepository
                               .findById(memberId)
-                              .orElseThrow(IllegalStateException::new))
+                              .orElseThrow(NotFoundException::new))
                       .build()
       ));
     }

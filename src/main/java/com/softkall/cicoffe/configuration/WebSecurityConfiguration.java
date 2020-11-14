@@ -1,5 +1,6 @@
 package com.softkall.cicoffe.configuration;
 
+import com.softkall.cicoffe.security.AuthenticationEntryPoint;
 import com.softkall.cicoffe.security.AuthenticationManager;
 import com.softkall.cicoffe.security.SecurityContextRepository;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author Nidhal Dogga
- * @since 11/14/2020 12:17 AM
+ * @created 11/14/2020 12:17 AM
  * SoftKall™ All rights reserved.
  */
 
@@ -30,7 +31,10 @@ public class WebSecurityConfiguration {
   private final SecurityContextRepository securityContextRepository;
 
   @Bean
-  public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+  public SecurityWebFilterChain securityWebFilterChain(
+          ServerHttpSecurity http,
+          AuthenticationEntryPoint authenticationEntryPoint
+  ) {
     return http
             .exceptionHandling()
             .authenticationEntryPoint((exchange, e) -> Mono.fromRunnable(() -> exchange
@@ -49,6 +53,8 @@ public class WebSecurityConfiguration {
             .securityContextRepository(securityContextRepository)
             .authorizeExchange()
             .anyExchange().permitAll()
+            .and().exceptionHandling()
+            .authenticationEntryPoint(authenticationEntryPoint)
             .and().build();
   }
 

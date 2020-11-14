@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author Nidhal Dogga
- * @since 11/13/2020 11:24 PM
+ * @created 11/13/2020 11:24 PM
  * SoftKall™ All rights reserved.
  */
 

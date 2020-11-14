@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /**
  *  @author Nidhal Dogga
- *  @since 11/13/2020 7:08 PM
+ *  @created 11/13/2020 7:08 PM
  *  SoftKall™ All rights reserved.
  */
 
@@ -44,6 +44,12 @@ public class TeamController extends AbstractController {
     @PostMapping("/{teamId}/join")
     public Mono<TeamDto> joinTeam(@PathVariable UUID teamId, Authentication authentication) {
         return Mono.just(teamService.joinTeam(getMemberId(authentication), teamId));
+    }
+
+    @Authenticated
+    @PostMapping("/{teamId}/leave")
+    public Mono<TeamDto> leaveTeam(@PathVariable UUID teamId, Authentication authentication) {
+        return Mono.just(teamService.leaveTeam(getMemberId(authentication), teamId));
     }
 
     @Authenticated

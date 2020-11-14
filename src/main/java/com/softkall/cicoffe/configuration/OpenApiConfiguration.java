@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Nidhal Dogga
- * @since 11/14/2020 12:04 AM
+ * @created 11/14/2020 12:04 AM
  * SoftKall™ All rights reserved.
  */
 
