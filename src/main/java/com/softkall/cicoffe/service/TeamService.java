@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public interface TeamService {
   TeamDto createTeam(CreateTeamDto team, UUID authorId);
-  void addMember(UUID authorId, UUID memberId, UUID teamId);
-  Collection<TeamDto> myTeams();
+  TeamDto addMember(UUID authorId, UUID memberId, UUID teamId);
+  TeamDto joinTeam(UUID memberId, UUID teamId);
+  Collection<TeamDto> myTeams(UUID memberId);
 }

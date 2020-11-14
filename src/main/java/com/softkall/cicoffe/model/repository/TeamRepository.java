@@ -1,8 +1,10 @@
 package com.softkall.cicoffe.model.repository;
 
+import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -13,5 +15,5 @@ import java.util.UUID;
 
 
 public interface TeamRepository extends JpaRepository<Team, UUID> {
-
+  Collection<Team> findAllByMembers_Id(UUID memberId);
 }

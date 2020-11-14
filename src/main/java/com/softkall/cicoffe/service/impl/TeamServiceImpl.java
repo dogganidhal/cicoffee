@@ -41,6 +41,48 @@ public class TeamServiceImpl implements TeamService {
             .members(Collections.singletonList(author))
             .build()
     );
+    return teamDto(team);
+  }
+
+  @Override
+  public TeamDto addMember(UUID authorId, UUID memberId, UUID teamId) {
+    Team team = teamRepository
+            .findById(teamId)
+            .orElseThrow(IllegalAccessError::new);
+    boolean userInTeam = team.getMembers().stream()
+            .anyMatch(member -> member.getId().equals(authorId));
+    if (!userInTeam) {
+      throw new IllegalArgumentException();
+    }
+    Member member = memberRepository
+            .findById(memberId)
+            .orElseThrow(IllegalAccessError::new);
+    team.getMembers().add(member);
+    return teamDto(teamRepository.save(team));
+  }
+
+  @Override
+  public TeamDto joinTeam(UUID memberId, UUID teamId) {
+    Team team = teamRepository
+            .findById(teamId)
+            .orElseThrow(IllegalAccessError::new);
+    Member member = memberRepository
+            .findById(memberId)
+            .orElseThrow(IllegalAccessError::new);
+    team.getMembers().add(member);
+    return teamDto(teamRepository.save(team));
+  }
+
+  @Override
+  public Collection<TeamDto> myTeams(UUID memberId) {
+    return teamRepository
+            .findAllByMembers_Id(memberId)
+            .stream()
+            .map(TeamServiceImpl::teamDto)
+            .collect(Collectors.toList());
+  }
+
+  private static TeamDto teamDto(Team team) {
     return TeamDto.builder()
             .id(team.getId())
             .name(team.getName())
@@ -55,27 +97,6 @@ public class TeamServiceImpl implements TeamService {
                     .collect(Collectors.toList())
             )
             .build();
-  }
-
-  @Override
-  public void addMember(UUID authorId, UUID memberId, UUID teamId) {
-    Team team = teamRepository
-            .findById(teamId)
-            .orElseThrow(IllegalAccessError::new);
-    boolean userInTeam = team.getMembers().stream()
-            .anyMatch(member -> member.getId() == authorId);
-    if (!userInTeam) {
-      throw new IllegalArgumentException();
-    }
-    Member member = memberRepository
-            .findById(memberId)
-            .orElseThrow(IllegalAccessError::new);
-    team.getMembers().add(member);
-  }
-
-  @Override
-  public Collection<TeamDto> myTeams() {
-    return null;
   }
 
 }

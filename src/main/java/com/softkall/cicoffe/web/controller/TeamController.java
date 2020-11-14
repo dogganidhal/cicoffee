@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.UUID;
 
 
@@ -35,8 +36,20 @@ public class TeamController extends AbstractController {
 
     @Authenticated
     @PostMapping("/{teamId}/members/{memberId}")
-    public void addMember(@PathVariable UUID teamId, @PathVariable UUID memberId, Authentication authentication) {
-        teamService.addMember(getMemberId(authentication), memberId, teamId);
+    public Mono<TeamDto> addMember(@PathVariable UUID teamId, @PathVariable UUID memberId, Authentication authentication) {
+        return Mono.just(teamService.addMember(getMemberId(authentication), memberId, teamId));
+    }
+
+    @Authenticated
+    @PostMapping("/{teamId}/join")
+    public Mono<TeamDto> joinTeam(@PathVariable UUID teamId, Authentication authentication) {
+        return Mono.just(teamService.joinTeam(getMemberId(authentication), teamId));
+    }
+
+    @Authenticated
+    @GetMapping
+    public Mono<Collection<TeamDto>> myTeams(Authentication authentication) {
+        return Mono.just(teamService.myTeams(getMemberId(authentication)));
     }
 
 }

@@ -33,6 +33,11 @@ public class Team {
   @ManyToOne
   private Member creator;
 
-  @ManyToMany(mappedBy = "teams", fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+          name = "team_members",
+          joinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id")
+  )
   private Collection<Member> members;
 }
