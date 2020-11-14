@@ -29,6 +29,7 @@ dependencies {
 
 	implementation "org.springdoc:springdoc-openapi-webflux-core:$openApiVersion"
 	implementation "org.springdoc:springdoc-openapi-webflux-ui:$openApiVersion"
+	implementation "org.springdoc:springdoc-openapi-security:$openApiVersion"
 
 	implementation "io.jsonwebtoken:jjwt-api:$jwtVersion"
 	runtimeOnly "io.jsonwebtoken:jjwt-impl:$jwtVersion"

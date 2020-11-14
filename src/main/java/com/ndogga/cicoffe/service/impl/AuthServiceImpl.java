@@ -39,6 +39,11 @@ public class AuthServiceImpl implements AuthService {
   private final JwtConfigurationProperties jwtConfiguration;
 
   @Override
+  public UUID decodeJwt(String token) {
+    return UUID.fromString(parseJwt(token).getBody().getSubject());
+  }
+
+  @Override
   public TokenDto login(LoginDto request) {
     Member member = memberRepository
             .findByEmail(request.getEmail())
@@ -99,7 +104,9 @@ public class AuthServiceImpl implements AuthService {
       refreshToken = Optional.of(refreshTokenRepository.save(
               RefreshToken.builder()
                       .token(issueJwt(memberId, expiration))
-                      .member(memberRepository.getOne(memberId))
+                      .member(memberRepository
+                              .findById(memberId)
+                              .orElseThrow(IllegalStateException::new))
                       .build()
       ));
     }

@@ -33,7 +33,8 @@ public class TeamServiceImpl implements TeamService {
   @Override
   public TeamDto createTeam(CreateTeamDto request, UUID authorId) {
     Member author = memberRepository
-            .getOne(authorId);
+            .findById(authorId)
+            .orElseThrow(IllegalStateException::new);
     Team team = teamRepository.save(Team.builder()
             .name(request.getName())
             .creator(author)

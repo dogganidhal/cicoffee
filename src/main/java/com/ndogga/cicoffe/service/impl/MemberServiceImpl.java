@@ -44,7 +44,9 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public MemberDto me(UUID memberId) {
-    Member member = memberRepository.getOne(memberId);
+    Member member = memberRepository
+            .findById(memberId)
+            .orElseThrow(IllegalStateException::new);
     return MemberDto.builder()
             .id(member.getId())
             .email(member.getEmail())

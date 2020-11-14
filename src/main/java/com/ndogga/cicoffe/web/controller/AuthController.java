@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -21,19 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/api/auth")
+public class AuthController extends AbstractController {
 
   private final AuthService authService;
 
-  @PostMapping
-  public TokenDto login(@RequestBody LoginDto request) {
-    return authService.login(request);
+  @PostMapping("/login")
+  public Mono<TokenDto> login(@RequestBody LoginDto request) {
+    return Mono.just(authService.login(request));
   }
 
   @PostMapping("/refresh")
-  public TokenDto refresh(@RequestBody RefreshDto request) {
-    return authService.refresh(request.getToken());
+  public Mono<TokenDto> refresh(@RequestBody RefreshDto request) {
+    return Mono.just(authService.refresh(request.getToken()));
   }
 
 }

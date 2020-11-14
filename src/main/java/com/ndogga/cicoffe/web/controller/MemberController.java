@@ -1,12 +1,13 @@
 package com.ndogga.cicoffe.web.controller;
 
+import com.ndogga.cicoffe.security.Authenticated;
 import com.ndogga.cicoffe.service.MemberService;
 import com.ndogga.cicoffe.web.dto.input.CreateMemberDto;
 import com.ndogga.cicoffe.web.dto.output.MemberDto;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -19,19 +20,19 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/member")
-public class MemberController {
+public class MemberController extends AbstractController {
 
   private final MemberService memberService;
 
   @PostMapping
-  public MemberDto signUp(@RequestBody CreateMemberDto member) {
-    return memberService.signUp(member);
+  public Mono<MemberDto> signUp(@RequestBody CreateMemberDto member) {
+    return Mono.just(memberService.signUp(member));
   }
 
   @GetMapping
-  public MemberDto me() {
-    // TODO: Grab the user id from auth
-    return memberService.me(UUID.randomUUID());
+  @Authenticated
+  public Mono<MemberDto> me(Authentication authentication) {
+    return Mono.just(memberService.me(getMemberId(authentication)));
   }
 
 }
