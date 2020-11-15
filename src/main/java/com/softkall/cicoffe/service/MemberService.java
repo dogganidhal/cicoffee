@@ -1,6 +1,7 @@
 package com.softkall.cicoffe.service;
 
 import com.softkall.cicoffe.web.dto.input.CreateMemberDto;
+import com.softkall.cicoffe.web.dto.input.CreateMobileDeviceDto;
 import com.softkall.cicoffe.web.dto.output.MemberDto;
 
 import java.util.UUID;
@@ -16,4 +17,6 @@ import java.util.UUID;
 public interface MemberService {
   MemberDto signUp(CreateMemberDto member);
   MemberDto me(UUID memberId);
+  void registerDevice(CreateMobileDeviceDto request, UUID memberId);
+  void unregisterDevice(String identifier, UUID memberId);
 }
