@@ -1,10 +1,16 @@
 package com.softkall.cicoffe.model.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -15,7 +21,10 @@ import java.util.UUID;
  */
 
 
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "sessions")
 public class Session {
   @Id
@@ -34,9 +43,13 @@ public class Session {
   @ManyToOne
   private Member author;
 
-  @ManyToOne
-  private Member payer;
+  @Fetch(value = FetchMode.SELECT)
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "session")
+  private Set<Order> orders;
 
-  @OneToMany
-  private Collection<Order> orders;
+  @Fetch(value = FetchMode.SELECT)
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "session")
+  private Set<SessionParticipant> participants;
 }

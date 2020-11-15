@@ -5,6 +5,7 @@ import com.softkall.cicoffe.exception.InternalServerException;
 import com.softkall.cicoffe.web.dto.output.ExceptionDto;
 import com.softkall.cicoffe.web.utils.DataBufferWriter;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -17,7 +18,7 @@ import reactor.core.publisher.Mono;
  * SoftKall™ All rights reserved.
  */
 
-
+@Slf4j
 @Component
 @AllArgsConstructor
 public class ApiExceptionHandler implements ErrorWebExceptionHandler {
@@ -29,6 +30,8 @@ public class ApiExceptionHandler implements ErrorWebExceptionHandler {
     ApiException apiException = new InternalServerException();
     if (throwable instanceof ApiException) {
       apiException = (ApiException) throwable;
+    } else {
+      log.error(throwable.getMessage(), throwable);
     }
     exchange.getResponse().setStatusCode(apiException.getStatus());
     return bufferWriter.write(exchange.getResponse(), ExceptionDto.fromApiException(apiException));

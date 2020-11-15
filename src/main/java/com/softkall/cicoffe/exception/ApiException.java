@@ -20,7 +20,8 @@ public abstract class ApiException extends RuntimeException {
     AUTHENTICATION_REQUIRED,
     FORBIDDEN,
     INVALID_CREDENTIALS,
-    INTERNAL_SERVER_ERROR
+    INTERNAL_SERVER_ERROR,
+    BAD_REQUEST
   }
 
 }

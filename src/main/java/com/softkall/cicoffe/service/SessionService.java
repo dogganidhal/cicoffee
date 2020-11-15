@@ -4,6 +4,7 @@ package com.softkall.cicoffe.service;
 import com.softkall.cicoffe.web.dto.input.CreateSessionDto;
 import com.softkall.cicoffe.web.dto.output.SessionDto;
 
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -14,5 +15,8 @@ import java.util.UUID;
 
 
 public interface SessionService {
-  SessionDto createSession(CreateSessionDto request, UUID userId);
+  Collection<SessionDto> mySessions(UUID memberId);
+  SessionDto createSession(CreateSessionDto request, UUID memberId);
+  SessionDto confirmParticipation(UUID sessionId, UUID memberId);
+  SessionDto retractParticipation(UUID sessionId, UUID memberId);
 }

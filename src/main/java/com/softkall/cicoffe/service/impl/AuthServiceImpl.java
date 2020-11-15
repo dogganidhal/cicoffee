@@ -10,7 +10,6 @@ import com.softkall.cicoffe.model.repository.RefreshTokenRepository;
 import com.softkall.cicoffe.service.AuthService;
 import com.softkall.cicoffe.web.dto.input.LoginDto;
 import com.softkall.cicoffe.web.dto.output.TokenDto;
-import com.sun.istack.Nullable;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -108,9 +107,7 @@ public class AuthServiceImpl implements AuthService {
       refreshToken = Optional.of(refreshTokenRepository.save(
               RefreshToken.builder()
                       .token(issueJwt(memberId, expiration))
-                      .member(memberRepository
-                              .findById(memberId)
-                              .orElseThrow(NotFoundException::new))
+                      .member(memberRepository.getById(memberId))
                       .build()
       ));
     }

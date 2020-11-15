@@ -48,9 +48,7 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public TeamDto addMember(UUID authorId, UUID memberId, UUID teamId) {
-    Team team = teamRepository
-            .findById(teamId)
-            .orElseThrow(NotFoundException::new);
+    Team team = teamRepository.getById(teamId);
     boolean userInTeam = team.getMembers().stream()
             .anyMatch(member -> member.getId().equals(authorId));
     if (!userInTeam) {
@@ -65,16 +63,12 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public TeamDto joinTeam(UUID memberId, UUID teamId) {
-    Team team = teamRepository
-            .findById(teamId)
-            .orElseThrow(NotFoundException::new);
+    Team team = teamRepository.getById(teamId);
 
     boolean memberAlreadyInTeam = team.getMembers().stream()
             .anyMatch(m -> m.getId().equals(memberId));
     if (!memberAlreadyInTeam) {
-      Member member = memberRepository
-              .findById(memberId)
-              .orElseThrow(NotFoundException::new);
+      Member member = memberRepository.getById(memberId);
       team.getMembers().add(member);
       team = teamRepository.save(team);
     }
@@ -83,9 +77,7 @@ public class TeamServiceImpl implements TeamService {
 
   @Override
   public TeamDto leaveTeam(UUID memberId, UUID teamId) {
-    Team team = teamRepository
-            .findById(teamId)
-            .orElseThrow(NotFoundException::new);
+    Team team = teamRepository.getById(teamId);
     team.getMembers()
             .removeIf(m -> m.getId().equals(memberId));
     return TeamDto.from(teamRepository.save(team));

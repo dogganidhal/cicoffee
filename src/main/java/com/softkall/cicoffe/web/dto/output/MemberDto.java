@@ -1,5 +1,6 @@
 package com.softkall.cicoffe.web.dto.output;
 
+import com.softkall.cicoffe.model.entity.Member;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,8 +17,19 @@ import java.util.UUID;
 @Data
 @Builder
 public class MemberDto {
+
   private UUID id;
   private String firstName;
   private String lastName;
   private String email;
+
+  public static MemberDto from(Member member) {
+    return MemberDto.builder()
+            .id(member.getId())
+            .email(member.getEmail())
+            .firstName(member.getFirstName())
+            .lastName(member.getLastName())
+            .build();
+  }
+
 }

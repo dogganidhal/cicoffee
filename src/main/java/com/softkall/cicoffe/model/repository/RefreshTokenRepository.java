@@ -1,7 +1,6 @@
 package com.softkall.cicoffe.model.repository;
 
 import com.softkall.cicoffe.model.entity.RefreshToken;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -14,6 +13,6 @@ import java.util.UUID;
  */
 
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, String> {
+public interface RefreshTokenRepository extends AbstractRepository<RefreshToken, String> {
   Collection<RefreshToken> findAllByMemberId(UUID memberId);
 }

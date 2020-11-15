@@ -46,4 +46,7 @@ public class Member {
           inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id")
   )
   private Collection<Team> teams;
+
+  @OneToMany
+  private Collection<MobileDevice> mobileDevices;
 }

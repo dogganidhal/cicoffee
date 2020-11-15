@@ -1,8 +1,8 @@
 package com.softkall.cicoffe.model.repository;
 
 import com.softkall.cicoffe.model.entity.Session;
-import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -12,6 +12,6 @@ import java.util.UUID;
  */
 
 
-public interface SessionRepository extends JpaRepository<Session, UUID> {
-
+public interface SessionRepository extends AbstractRepository<Session, UUID> {
+  Collection<Session> findAllByTeam_Members_Id(UUID memberId);
 }
