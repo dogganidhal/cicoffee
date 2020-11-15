@@ -1,18 +1,18 @@
 package com.softkall.cicoffe.model.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.UUID;
 
 
 /**
  * @author Nidhal Dogga
- * @created 11/13/2020 9:43 PM
+ * @created 11/15/2020 2:56 AM
  * SoftKall™ All rights reserved.
  */
 
@@ -21,18 +21,18 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "orders")
-public class Order {
+@Entity(name = "order_items")
+public class OrderItem {
   @Id
   @GeneratedValue
   private UUID id;
 
-  @ManyToOne
-  private Session session;
+  @Column
+  private Integer quantity;
 
   @ManyToOne
-  private Member member;
+  private Order order;
 
-  @OneToMany
-  private Collection<OrderItem> items;
+  @ManyToOne
+  private Product product;
 }

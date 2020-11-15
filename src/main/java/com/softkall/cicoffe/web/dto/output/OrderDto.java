@@ -21,16 +21,16 @@ import java.util.stream.Collectors;
 public class OrderDto {
 
   private UUID id;
-  private Integer quantity;
+  private MemberDto member;
   private SessionDto session;
-  private Collection<ProductDto> products;
+  private Collection<OrderItemDto> items;
 
   public static OrderDto from(Order order) {
     return OrderDto.builder()
             .id(order.getId())
-            .quantity(order.getQuantity())
-            .products(order.getProducts().stream()
-                    .map(ProductDto::from)
+            .member(MemberDto.from(order.getMember()))
+            .items(order.getItems().stream()
+                    .map(OrderItemDto::from)
                     .collect(Collectors.toList())
             )
             .build();
