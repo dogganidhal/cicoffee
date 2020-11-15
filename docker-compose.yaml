@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  api:
+    image: docker.nexus.ndogga.com/softkall/cicoffee-api
+    restart: always
+    ports:
+    - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: deployed
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/cicoffee
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: supersecret
+      CICOFFEE_AUTH_JWT_SIGNING_KEY: W4c3EPAGUnUZqVIQwbaIMJHly9Cdp_66vKgKxL_n9oK2HOg98dNCNclhMID2wqBdY3A7YtAh01wpUjPXZ6PMocmPi67G932WAj_tNFb7QTOO5IZSqGaUKVw7Mpl_IDDFMNcUKASCfpyZs9sM4rM2cTDtDr7Mv1ibCjkdbyEG5Q6_R6crf41FhLlqQuSjnETEvhZoktDmAuU1J_ikpy
+
+  database:
+    image: postgres
+    restart: always
+    volumes:
+    - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: cicoffee
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: supersecret
+
+volumes:
+  postgres:
