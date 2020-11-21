@@ -17,7 +17,7 @@ public abstract class ApiException extends RuntimeException {
 
   public enum ErrorCode {
     NOT_FOUND,
-    AUTHENTICATION_REQUIRED,
+    USER_EXISTS,
     FORBIDDEN,
     INVALID_CREDENTIALS,
     INTERNAL_SERVER_ERROR,

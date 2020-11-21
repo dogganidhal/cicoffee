@@ -18,5 +18,6 @@ public interface TeamService {
   TeamDto addMember(UUID authorId, UUID memberId, UUID teamId);
   TeamDto joinTeam(UUID memberId, UUID teamId);
   TeamDto leaveTeam(UUID memberId, UUID teamId);
+  void deleteTeam(UUID memberId, UUID teamId);
   Collection<TeamDto> myTeams(UUID memberId);
 }

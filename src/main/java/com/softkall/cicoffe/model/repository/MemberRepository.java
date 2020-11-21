@@ -14,4 +14,5 @@ import java.util.UUID;
 
 public interface MemberRepository extends AbstractRepository<Member, UUID> {
   Optional<Member> findByEmail(String email);
+  Long countByEmail(String email);
 }

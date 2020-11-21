@@ -53,6 +53,12 @@ public class TeamController extends AbstractController {
     }
 
     @Authenticated
+    @DeleteMapping("/{teamId}")
+    public Mono<TeamDto> deleteTeam(@PathVariable UUID teamId, Authentication authentication) {
+        return Mono.fromRunnable(() -> teamService.deleteTeam(getMemberId(authentication), teamId));
+    }
+
+    @Authenticated
     @GetMapping
     public Mono<Collection<TeamDto>> myTeams(Authentication authentication) {
         return Mono.just(teamService.myTeams(getMemberId(authentication)));

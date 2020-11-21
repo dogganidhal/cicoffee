@@ -51,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public TokenDto login(LoginDto request) {
     Member member = memberRepository
-            .findByEmail(request.getEmail())
+            .findByEmail(request.getEmail().toLowerCase())
             .orElseThrow(NotFoundException::new);
     if (!passwordEncoder.matches(request.getPassword(), member.getPasswordHash())) {
       throw new InvalidCredentialsException();

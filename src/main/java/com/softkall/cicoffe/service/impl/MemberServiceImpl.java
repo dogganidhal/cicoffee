@@ -1,6 +1,7 @@
 package com.softkall.cicoffe.service.impl;
 
 import com.softkall.cicoffe.exception.ForbiddenException;
+import com.softkall.cicoffe.exception.UserExistsException;
 import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.MobileDevice;
 import com.softkall.cicoffe.model.repository.MemberRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
 
 /**
  * @author Nidhal Dogga
@@ -32,8 +34,11 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public MemberDto signUp(CreateMemberDto request) {
+    if (memberRepository.countByEmail(request.getEmail()) > 0) {
+      throw new UserExistsException();
+    }
     Member member = memberRepository.save(Member.builder()
-            .email(request.getEmail())
+            .email(request.getEmail().toLowerCase())
             .firstName(request.getFirstName())
             .lastName(request.getLastName())
             .passwordHash(passwordEncoder.encode(request.getPassword()))

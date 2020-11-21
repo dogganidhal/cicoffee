@@ -1,14 +1,12 @@
 package com.softkall.cicoffe.service.impl;
 
 import com.softkall.cicoffe.exception.ForbiddenException;
-import com.softkall.cicoffe.exception.NotFoundException;
 import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.Team;
 import com.softkall.cicoffe.model.repository.MemberRepository;
 import com.softkall.cicoffe.model.repository.TeamRepository;
 import com.softkall.cicoffe.service.TeamService;
 import com.softkall.cicoffe.web.dto.input.CreateTeamDto;
-import com.softkall.cicoffe.web.dto.output.MemberDto;
 import com.softkall.cicoffe.web.dto.output.TeamDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,7 +62,6 @@ public class TeamServiceImpl implements TeamService {
   @Override
   public TeamDto joinTeam(UUID memberId, UUID teamId) {
     Team team = teamRepository.getById(teamId);
-
     boolean memberAlreadyInTeam = team.getMembers().stream()
             .anyMatch(m -> m.getId().equals(memberId));
     if (!memberAlreadyInTeam) {
@@ -81,6 +78,15 @@ public class TeamServiceImpl implements TeamService {
     team.getMembers()
             .removeIf(m -> m.getId().equals(memberId));
     return TeamDto.from(teamRepository.save(team));
+  }
+
+  @Override
+  public void deleteTeam(UUID memberId, UUID teamId) {
+    Team team = teamRepository.getById(teamId);
+    if (!team.getCreator().getId().equals(memberId)) {
+       throw new ForbiddenException();
+    }
+    teamRepository.deleteById(teamId);
   }
 
   @Override

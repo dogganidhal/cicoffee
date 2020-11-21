@@ -23,6 +23,7 @@ public class TeamDto {
   private UUID id;
   private String name;
   private Collection<MemberDto> members;
+  private MemberDto creator;
 
   public static TeamDto from(Team team) {
     return from(team, true);
@@ -44,6 +45,7 @@ public class TeamDto {
                             .collect(Collectors.toList()) :
                     null
             )
+            .creator(MemberDto.from(team.getCreator()))
             .build();
   }
 
