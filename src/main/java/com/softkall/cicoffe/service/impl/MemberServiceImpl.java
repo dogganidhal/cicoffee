@@ -14,7 +14,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 /**
@@ -83,6 +85,15 @@ public class MemberServiceImpl implements MemberService {
       throw new ForbiddenException();
     }
     mobileDeviceRepository.deleteById(mobileDevice.getId());
+  }
+
+  @Override
+  public List<MemberDto> searchMembers(String query) {
+    return memberRepository
+            .searchMembers(query.toLowerCase())
+            .stream()
+            .map(MemberDto::from)
+            .collect(Collectors.toList());
   }
 
 }

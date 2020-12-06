@@ -4,6 +4,7 @@ import com.softkall.cicoffe.web.dto.input.CreateMemberDto;
 import com.softkall.cicoffe.web.dto.input.CreateMobileDeviceDto;
 import com.softkall.cicoffe.web.dto.output.MemberDto;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -19,4 +20,5 @@ public interface MemberService {
   MemberDto me(UUID memberId);
   void registerDevice(CreateMobileDeviceDto request, UUID memberId);
   void unregisterDevice(String identifier, UUID memberId);
+  List<MemberDto> searchMembers(String query);
 }

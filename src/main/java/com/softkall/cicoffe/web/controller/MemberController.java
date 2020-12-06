@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.Collection;
+
 
 /**
  * @author Nidhal Dogga
@@ -34,6 +36,12 @@ public class MemberController extends AbstractController {
   @Authenticated
   public Mono<MemberDto> me(Authentication authentication) {
     return Mono.just(memberService.me(getMemberId(authentication)));
+  }
+
+  @Authenticated
+  @GetMapping("/search")
+  public Mono<Collection<MemberDto>> searchMembers(String query) {
+    return Mono.just(memberService.searchMembers(query));
   }
 
   @Authenticated
