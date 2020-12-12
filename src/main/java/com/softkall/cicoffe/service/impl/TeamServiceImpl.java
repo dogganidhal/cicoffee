@@ -5,6 +5,7 @@ import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.Team;
 import com.softkall.cicoffe.model.repository.MemberRepository;
 import com.softkall.cicoffe.model.repository.TeamRepository;
+import com.softkall.cicoffe.service.MailService;
 import com.softkall.cicoffe.service.TeamService;
 import com.softkall.cicoffe.web.dto.input.CreateTeamDto;
 import com.softkall.cicoffe.web.dto.output.TeamDto;
@@ -29,6 +30,7 @@ public class TeamServiceImpl implements TeamService {
 
   private final TeamRepository teamRepository;
   private final MemberRepository memberRepository;
+  private final MailService mailService;
 
   @Override
   public TeamDto createTeam(CreateTeamDto request, UUID authorId) {
@@ -96,6 +98,13 @@ public class TeamServiceImpl implements TeamService {
             .stream()
             .map(TeamDto::from)
             .collect(Collectors.toList());
+  }
+
+  @Override
+  public void inviteByEmail(UUID memberId, UUID teamId, Collection<String> emails) {
+    Team team = teamRepository.getById(teamId);
+    Member member = memberRepository.getById(memberId);
+    emails.forEach(email -> mailService.sendTeamInvitation(team, email, member));
   }
 
 }

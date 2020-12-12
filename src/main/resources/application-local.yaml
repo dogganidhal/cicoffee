@@ -1,8 +1,11 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/cicoffee
-    username: root
-    password: root
+    username: postgres
+    password: admin
+  mail:
+    host: mail.ndogga.com
+    port: 25
 
 cicoffee:
   auth:

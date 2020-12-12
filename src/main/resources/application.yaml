@@ -6,6 +6,8 @@ spring:
 
 
 cicoffee:
+  mail:
+    from: cicoffee@softkall.com
   auth:
     jwt:
       expires-in: 3600

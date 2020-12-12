@@ -20,4 +20,5 @@ public interface TeamService {
   TeamDto leaveTeam(UUID memberId, UUID teamId);
   void deleteTeam(UUID memberId, UUID teamId);
   Collection<TeamDto> myTeams(UUID memberId);
+  void inviteByEmail(UUID memberId, UUID teamId, Collection<String> emails);
 }

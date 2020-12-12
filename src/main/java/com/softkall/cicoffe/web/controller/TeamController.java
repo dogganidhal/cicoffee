@@ -64,4 +64,10 @@ public class TeamController extends AbstractController {
         return Mono.just(teamService.myTeams(getMemberId(authentication)));
     }
 
+    @Authenticated
+    @PostMapping("/{teamId}/invite")
+    public Mono<Void> inviteByEmail(@PathVariable UUID teamId, @RequestBody Collection<String> emails, Authentication authentication) {
+        return Mono.fromRunnable(() -> teamService.inviteByEmail(getMemberId(authentication), teamId, emails));
+    }
+
 }
