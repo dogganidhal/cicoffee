@@ -3,6 +3,9 @@ spring:
     url: jdbc:postgresql://92.94.210.134:45432/cicoffee
     username: admin
     password: supersecret
+  mail:
+    host: mail.ndogga.com
+    port: 25
 
 cicoffee:
   auth:

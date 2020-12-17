@@ -105,4 +105,9 @@ public class SessionServiceImpl implements SessionService {
     return SessionDto.from(session);
   }
 
+    @Override
+    public SessionDto getById(UUID sessionId) {
+        return SessionDto.from(sessionRepository.getById(sessionId));
+    }
+
 }

@@ -37,6 +37,12 @@ public class SessionController extends AbstractController {
     return Mono.just(sessionService.mySessions(getMemberId(authentication)));
   }
 
+  @GetMapping("/{sessionId}")
+  @Authenticated
+  public Mono<SessionDto> getSessionById(@PathVariable UUID sessionId) {
+    return Mono.just(sessionService.getById(sessionId));
+  }
+
   @PostMapping
   @Authenticated
   public Mono<SessionDto> createSession(

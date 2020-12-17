@@ -19,4 +19,5 @@ public interface SessionService {
   SessionDto createSession(CreateSessionDto request, UUID memberId);
   SessionDto confirmParticipation(UUID sessionId, UUID memberId);
   SessionDto retractParticipation(UUID sessionId, UUID memberId);
+  SessionDto getById(UUID sessionId);
 }
