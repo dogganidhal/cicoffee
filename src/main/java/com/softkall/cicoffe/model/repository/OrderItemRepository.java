@@ -12,5 +12,5 @@ import java.util.UUID;
 
 
 public interface OrderItemRepository extends AbstractRepository<OrderItem, UUID> {
-
+  void removeAllByOrderId(UUID orderId);
 }

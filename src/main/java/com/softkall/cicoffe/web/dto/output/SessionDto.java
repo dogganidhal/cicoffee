@@ -34,7 +34,7 @@ public class SessionDto {
     return SessionDto.builder()
             .id(session.getId())
             .author(MemberDto.from(session.getAuthor()))
-            .team(TeamDto.from(session.getTeam(), false))
+            .team(TeamDto.from(session.getTeam()))
             .orders(session.getOrders() != null ?
                     session.getOrders().stream()
                             .map(OrderDto::from)

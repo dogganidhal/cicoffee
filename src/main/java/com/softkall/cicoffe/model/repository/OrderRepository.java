@@ -3,6 +3,7 @@ package com.softkall.cicoffe.model.repository;
 import com.softkall.cicoffe.model.entity.Order;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -14,4 +15,5 @@ import java.util.UUID;
 
 public interface OrderRepository extends AbstractRepository<Order, UUID> {
   Collection<Order> findAllBySessionId(UUID sessionId);
+  Order findByMemberIdAndSessionId(UUID memberId, UUID sessionId);
 }

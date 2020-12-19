@@ -11,9 +11,9 @@ import com.softkall.cicoffe.web.dto.output.OrderDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,9 +34,10 @@ public class OrderServiceImpl implements OrderService {
   private final OrderItemRepository orderItemRepository;
 
   @Override
+  @Transactional
   public OrderDto order(UUID memberId, UUID sessionId, CreateOrderDto request) {
     Session session = sessionRepository.getById(sessionId);
-    if (session.getEndDate().isAfter(LocalDateTime.now())) {
+    if (session.getEndDate().isBefore(LocalDateTime.now())) {
       throw new BadRequestException();
     }
     boolean memberInTeam = session.getTeam().getMembers().stream()
@@ -45,23 +46,27 @@ public class OrderServiceImpl implements OrderService {
       throw new ForbiddenException();
     }
     Member member = memberRepository.getById(memberId);
-    Collection<OrderItem> items = request.getItems().stream()
-            .map(itemDto -> {
-              Product product = productRepository.getById(itemDto.getProductId());
-              return orderItemRepository.save(OrderItem.builder()
-                      .product(product)
-                      .quantity(itemDto.getQuantity())
-                      .build()
-              );
-            })
-            .collect(Collectors.toList());
-    Order order = orderRepository.save(Order.builder()
-            .items(items)
-            .member(member)
-            .session(session)
-            .build()
+    Order order = Objects.requireNonNullElseGet(
+            orderRepository.findByMemberIdAndSessionId(memberId, sessionId),
+            () -> orderRepository.save(Order.builder()
+                    .items(Collections.emptySet())
+                    .member(member)
+                    .session(session)
+                    .build()
+            )
     );
-    return OrderDto.from(order);
+    orderItemRepository.removeAllByOrderId(order.getId());
+    Set<OrderItem> items = new HashSet<>(orderItemRepository.saveAll(request.getItems().stream()
+            .map(itemDto -> OrderItem.builder()
+                    .product(productRepository.getById(itemDto.getProductId()))
+                    .order(order)
+                    .quantity(itemDto.getQuantity())
+                    .build()
+            )
+            .collect(Collectors.toList())
+    ));
+    order.setItems(items);
+    return OrderDto.from(orderRepository.save(order));
   }
 
   @Override

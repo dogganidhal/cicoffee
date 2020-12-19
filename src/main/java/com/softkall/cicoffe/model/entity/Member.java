@@ -4,9 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -47,6 +52,8 @@ public class Member {
   )
   private Collection<Team> teams;
 
-  @OneToMany
-  private Collection<MobileDevice> mobileDevices;
+  @Fetch(value = FetchMode.SELECT)
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
+  private Set<MobileDevice> mobileDevices;
 }
