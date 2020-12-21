@@ -41,6 +41,7 @@ public class SessionServiceImpl implements SessionService {
   private final TeamRepository teamRepository;
   private final SessionParticipantRepository sessionParticipantRepository;
   private final CommunicationManager communicationManager;
+  private final OneSignalNotificationService notificationService;
 
   @Override
   public Collection<SessionDto> mySessions(UUID memberId) {

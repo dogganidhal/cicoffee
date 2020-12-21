@@ -7,6 +7,8 @@ import com.softkall.cicoffe.service.NotificationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 
 /**
  * @author Nidhal Dogga
@@ -23,7 +25,16 @@ public class CommunicationManagerImpl implements CommunicationManager {
 
   @Override
   public void notifyTeamOfSession(Session session) {
-
+    notificationService.sendNotification(
+            session.getTeam().getMembers().stream()
+                    .filter(member -> !member.getId().equals(session.getAuthor().getId()))
+                    .collect(Collectors.toList()),
+            "Ready for a coffee break ?",
+            String.format(
+                    "%s has invited you to have some coffee with team %s",
+                    session.getAuthor().getFirstName(),
+                    session.getTeam().getName().toUpperCase()
+            ));
   }
 
   @Override

@@ -40,7 +40,6 @@ public class AuthServiceImpl implements AuthService {
   private final RefreshTokenRepository refreshTokenRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtConfigurationProperties jwtConfiguration;
-
   @Override
   public UUID decodeJwt(String token) {
     return parseJwt(token)
@@ -56,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
     if (!passwordEncoder.matches(request.getPassword(), member.getPasswordHash())) {
       throw new InvalidCredentialsException();
     }
+
     return generateToken(member.getId());
   }
 
