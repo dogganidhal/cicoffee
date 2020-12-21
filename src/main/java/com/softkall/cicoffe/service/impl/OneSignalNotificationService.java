@@ -73,6 +73,7 @@ public class OneSignalNotificationService implements NotificationService {
         @JsonProperty("include_player_ids")
         private Collection<String> deviceIds;
         private Map<String, Object> data;
+
     }
 
     private enum OneSignalLocale {

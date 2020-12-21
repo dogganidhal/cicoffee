@@ -29,8 +29,8 @@ public class CommunicationManagerImpl implements CommunicationManager {
             session.getTeam().getMembers().stream()
                     .filter(member -> !member.getId().equals(session.getAuthor().getId()))
                     .collect(Collectors.toList()),
-            "Ready for a coffee break ?",
-            String.format(
+            "Ready for a coffee break ? ☕",
+                    String.format(
                     "%s has invited you to have some coffee with team %s",
                     session.getAuthor().getFirstName(),
                     session.getTeam().getName().toUpperCase()
