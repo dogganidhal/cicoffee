@@ -7,6 +7,7 @@ import com.softkall.cicoffe.model.repository.MemberRepository;
 import com.softkall.cicoffe.model.repository.TeamRepository;
 import com.softkall.cicoffe.service.MailService;
 import com.softkall.cicoffe.service.TeamService;
+import com.softkall.cicoffe.web.dto.input.CreateInviteDto;
 import com.softkall.cicoffe.web.dto.input.CreateTeamDto;
 import com.softkall.cicoffe.web.dto.output.TeamDto;
 import lombok.AllArgsConstructor;
@@ -101,10 +102,10 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public void inviteByEmail(UUID memberId, UUID teamId, Collection<String> emails) {
+  public void inviteByEmail(UUID memberId, UUID teamId, CreateInviteDto invite) {
     Team team = teamRepository.getById(teamId);
     Member member = memberRepository.getById(memberId);
-    emails.forEach(email -> mailService.sendTeamInvitation(team, email, member));
+    invite.getEmails().forEach(email -> mailService.sendTeamInvitation(team, email, member, invite.getLink()));
   }
 
 }

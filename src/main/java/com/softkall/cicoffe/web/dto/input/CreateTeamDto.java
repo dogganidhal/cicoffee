@@ -16,4 +16,5 @@ import javax.validation.constraints.NotBlank;
 public class CreateTeamDto {
   @NotBlank
   private String name;
+
 }

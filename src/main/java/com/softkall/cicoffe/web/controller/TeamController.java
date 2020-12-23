@@ -2,6 +2,7 @@ package com.softkall.cicoffe.web.controller;
 
 import com.softkall.cicoffe.security.Authenticated;
 import com.softkall.cicoffe.service.TeamService;
+import com.softkall.cicoffe.web.dto.input.CreateInviteDto;
 import com.softkall.cicoffe.web.dto.input.CreateTeamDto;
 import com.softkall.cicoffe.web.dto.output.TeamDto;
 import lombok.AllArgsConstructor;
@@ -66,8 +67,8 @@ public class TeamController extends AbstractController {
 
     @Authenticated
     @PostMapping("/{teamId}/invite")
-    public Mono<Void> inviteByEmail(@PathVariable UUID teamId, @RequestBody Collection<String> emails, Authentication authentication) {
-        return Mono.fromRunnable(() -> teamService.inviteByEmail(getMemberId(authentication), teamId, emails));
+    public Mono<Void> inviteByEmail(@PathVariable UUID teamId, @RequestBody CreateInviteDto invite, Authentication authentication) {
+        return Mono.fromRunnable(() -> teamService.inviteByEmail(getMemberId(authentication), teamId, invite));
     }
 
 }

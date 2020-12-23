@@ -11,5 +11,5 @@ import com.softkall.cicoffe.model.entity.Team;
 
 
 public interface MailService {
-  void sendTeamInvitation(Team team, String email, Member member);
+  void sendTeamInvitation(Team team, String email, Member member, String link);
 }

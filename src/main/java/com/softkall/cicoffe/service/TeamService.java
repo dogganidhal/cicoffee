@@ -1,5 +1,6 @@
 package com.softkall.cicoffe.service;
 
+import com.softkall.cicoffe.web.dto.input.CreateInviteDto;
 import com.softkall.cicoffe.web.dto.input.CreateTeamDto;
 import com.softkall.cicoffe.web.dto.output.TeamDto;
 
@@ -20,5 +21,5 @@ public interface TeamService {
   TeamDto leaveTeam(UUID memberId, UUID teamId);
   void deleteTeam(UUID memberId, UUID teamId);
   Collection<TeamDto> myTeams(UUID memberId);
-  void inviteByEmail(UUID memberId, UUID teamId, Collection<String> emails);
+  void inviteByEmail(UUID memberId, UUID teamId, CreateInviteDto invite);
 }

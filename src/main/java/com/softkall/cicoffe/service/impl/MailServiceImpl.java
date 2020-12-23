@@ -36,13 +36,13 @@ public class MailServiceImpl implements MailService {
   private final MailConfigurationProperties mailConfiguration;
 
   @Override
-  public void sendTeamInvitation(Team team, String email, Member member) {
+  public void sendTeamInvitation(Team team, String email, Member member, String link) {
     Map<String, Object> variables = new HashMap<>();
     variables.put("inviterFullName", String.format("%s %s", member.getFirstName(), member.getLastName()));
     variables.put("teamName", team.getName());
-    //variables.put("invitationUrl", String.format("http://localhost:8080/content/invitation/%s", UUID.randomUUID().toString()));
-    variables.put("invitationUrl", "http://pausa-cafe.ga/PZXe");
-            String message = compileTemplate("team-invitation", variables);
+    variables.put("invitationUrl", link);
+
+    String message = compileTemplate("team-invitation", variables);
     MimeMessagePreparator mimeMessage = mime -> {
       MimeMessageHelper messageHelper = new MimeMessageHelper(mime, "UTF-8");
       messageHelper.setFrom(mailConfiguration.getFrom());
