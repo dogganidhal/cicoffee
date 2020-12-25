@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
   @Transactional
   public OrderDto order(UUID memberId, UUID sessionId, CreateOrderDto request) {
     Session session = sessionRepository.getById(sessionId);
-    if (session.getEndDate().isBefore(LocalDateTime.now())) {
+    if (session.getEndDate().before(Timestamp.from(Instant.now()))) {
       throw new BadRequestException();
     }
     boolean memberInTeam = session.getTeam().getMembers().stream()

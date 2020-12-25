@@ -7,9 +7,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,10 +31,10 @@ public class Session {
   private UUID id;
 
   @Column(name = "start_date")
-  private LocalDateTime startDate;
+  private Timestamp startDate;
 
   @Column(name = "end_date")
-  private LocalDateTime endDate;
+  private Timestamp endDate;
 
   @ManyToOne
   private Team team;

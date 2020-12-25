@@ -47,8 +47,8 @@ public class SessionDto {
                             .collect(Collectors.toList()) :
                     Collections.emptyList()
             )
-            .startDate(session.getStartDate())
-            .endDate(session.getEndDate())
+            .startDate(session.getStartDate().toLocalDateTime())
+            .endDate(session.getEndDate().toLocalDateTime())
             .build();
   }
 

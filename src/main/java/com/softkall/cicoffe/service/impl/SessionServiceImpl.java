@@ -2,7 +2,6 @@ package com.softkall.cicoffe.service.impl;
 
 import com.softkall.cicoffe.exception.BadRequestException;
 import com.softkall.cicoffe.exception.ForbiddenException;
-import com.softkall.cicoffe.exception.NotFoundException;
 import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.Session;
 import com.softkall.cicoffe.model.entity.SessionParticipant;
@@ -19,6 +18,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+//import java.sql.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -62,8 +65,8 @@ public class SessionServiceImpl implements SessionService {
             .save(Session.builder()
                     .author(author)
                     .team(team)
-                    .startDate(request.getStartDate())
-                    .endDate(request.getEndDate())
+                    .startDate(Timestamp.valueOf(request.getStartDate()))
+                    .endDate(Timestamp.valueOf(request.getEndDate()))
                     .build()
             );
     communicationManager.notifyTeamOfSession(session);
