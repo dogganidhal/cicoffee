@@ -25,5 +25,3 @@ logging:
                 TRACE
 
 
-server:
-  port: 21589

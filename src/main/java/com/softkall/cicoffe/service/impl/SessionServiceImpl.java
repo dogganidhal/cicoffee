@@ -65,8 +65,8 @@ public class SessionServiceImpl implements SessionService {
             .save(Session.builder()
                     .author(author)
                     .team(team)
-                    .startDate(Timestamp.valueOf(request.getStartDate()))
-                    .endDate(Timestamp.valueOf(request.getEndDate()))
+                    .startDate(Timestamp.from(request.getStartDate().toInstant(ZoneOffset.UTC)))
+                    .endDate(Timestamp.from(request.getEndDate().toInstant(ZoneOffset.UTC)))
                     .build()
             );
     communicationManager.notifyTeamOfSession(session);
