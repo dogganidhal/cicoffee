@@ -13,5 +13,5 @@ import java.util.UUID;
 
 
 public interface SessionParticipantRepository extends AbstractRepository<SessionParticipant, UUID> {
-  void deleteByMember_Id(UUID memberId);
+  void deleteByMember_IdAndSession_Id(UUID memberId, UUID sessionId);
 }

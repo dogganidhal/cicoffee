@@ -105,7 +105,7 @@ public class SessionServiceImpl implements SessionService {
     session.getParticipants()
             .removeIf(participant -> participant.getMember().getId().equals(memberId));
     session = sessionRepository.save(session);
-    sessionParticipantRepository.deleteByMember_Id(memberId);
+    sessionParticipantRepository.deleteByMember_IdAndSession_Id(memberId, sessionId);
     return SessionDto.from(session);
   }
 
