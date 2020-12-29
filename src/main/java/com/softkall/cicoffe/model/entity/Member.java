@@ -1,9 +1,6 @@
 package com.softkall.cicoffe.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
@@ -23,6 +20,7 @@ import java.util.UUID;
 
 
 @Data
+@With
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

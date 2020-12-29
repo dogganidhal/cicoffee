@@ -1,6 +1,7 @@
 package com.softkall.cicoffe.service.impl;
 
 import com.softkall.cicoffe.configuration.properties.JwtConfigurationProperties;
+import com.softkall.cicoffe.configuration.properties.WebConfigurationProperties;
 import com.softkall.cicoffe.exception.InvalidCredentialsException;
 import com.softkall.cicoffe.exception.NotFoundException;
 import com.softkall.cicoffe.model.entity.Member;
@@ -23,6 +24,11 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+
+import com.softkall.cicoffe.service.MailService;
+import com.softkall.cicoffe.model.entity.ResetCode;
+import com.softkall.cicoffe.model.repository.ResetCodeRepository;
 
 
 /**
@@ -39,7 +45,11 @@ public class AuthServiceImpl implements AuthService {
   private final MemberRepository memberRepository;
   private final RefreshTokenRepository refreshTokenRepository;
   private final PasswordEncoder passwordEncoder;
+  private final MailService mailService;
   private final JwtConfigurationProperties jwtConfiguration;
+  private final WebConfigurationProperties webConfiguration;
+  private final ResetCodeRepository resetCodeRepository;
+
   @Override
   public UUID decodeJwt(String token) {
     return parseJwt(token)
@@ -123,6 +133,45 @@ public class AuthServiceImpl implements AuthService {
     } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException throwable) {
       return Optional.empty();
     }
+  }
+
+  @Override
+  public void forgotPassword(String email){
+
+    Member member = memberRepository
+            .findByEmail(email.toLowerCase())
+            .orElseThrow(NotFoundException::new);
+
+    ResetCode resetCode = resetCodeRepository.save(ResetCode.builder()
+            .code(getRandomHexString())
+            .createdDate(LocalDateTime.now())
+            .member(member)
+            .build()
+    );
+
+    String resetUrl = String.format(
+            "%s://%s:%s/content/reset-password?code=%s",
+            webConfiguration.getProtocol(),
+            webConfiguration.getHost(),
+            webConfiguration.getPort(),
+            resetCode.getCode()
+    );
+    mailService.sendResetPassword(member.getEmail(), resetUrl);
+  }
+
+  @Override
+  public void resetPassword(Member member, String password) {
+      memberRepository.save(member.withPasswordHash(passwordEncoder.encode(password)));
+  }
+
+  private String getRandomHexString() {
+    long stringLength = 36;
+    ThreadLocalRandom random = ThreadLocalRandom.current();
+    StringBuilder stringBuffer = new StringBuilder();
+    while(stringBuffer.length() < stringLength){
+      stringBuffer.append(Integer.toHexString(random.nextInt()));
+    }
+    return stringBuffer.substring(0, (int) stringLength);
   }
 
 }

@@ -47,7 +47,7 @@ public class MailServiceImpl implements MailService {
       MimeMessageHelper messageHelper = new MimeMessageHelper(mime, "UTF-8");
       messageHelper.setFrom(mailConfiguration.getFrom());
       messageHelper.setTo(email);
-      messageHelper.setSubject(String.format("%s has invited you to join team %s", member.getFirstName(), team.getName()));
+      messageHelper.setSubject(String.format("Pausa Café ☕ : %s has invited you to join team %s", member.getFirstName(), team.getName()));
       messageHelper.setText(message, true);
     };
     try {
@@ -56,7 +56,25 @@ public class MailServiceImpl implements MailService {
       log.error(exception.getMessage(), exception);
     }
   }
+  @Override
+  public void sendResetPassword(String email, String link) {
+    Map<String, Object> variables = new HashMap<>();
+    variables.put("link", link);
 
+    String message = compileTemplate("password-reset", variables);
+    MimeMessagePreparator mimeMessage = mime -> {
+      MimeMessageHelper messageHelper = new MimeMessageHelper(mime, "UTF-8");
+      messageHelper.setFrom(mailConfiguration.getFrom());
+      messageHelper.setTo(email);
+      messageHelper.setSubject("Pausa Café ☕ : Reset your password ");
+      messageHelper.setText(message, true);
+    };
+    try {
+      mailSender.send(mimeMessage);
+    } catch (MailException exception) {
+      log.error(exception.getMessage(), exception);
+    }
+  }
   private String compileTemplate(String id, Map<String, Object> variables) {
     Context context = new Context();
     variables.forEach(context::setVariable);
