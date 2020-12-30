@@ -42,6 +42,7 @@ public class SessionServiceImpl implements SessionService {
   private final SessionParticipantRepository sessionParticipantRepository;
   private final OrderRepository orderRepository;
   private final CommunicationManager communicationManager;
+  private final OrderItemRepository orderItemRepository;
   private final OneSignalNotificationService notificationService;
 
   @Override
@@ -104,6 +105,8 @@ public class SessionServiceImpl implements SessionService {
             .removeIf(participant -> participant.getMember().getId().equals(memberId));
     session = sessionRepository.save(session);
     sessionParticipantRepository.deleteByMember_IdAndSession_Id(memberId, sessionId);
+
+
     orderRepository.deleteAll(session.getOrders().stream()
             .filter(order -> order.getMember().getId().equals(memberId))
             .collect(Collectors.toList())
