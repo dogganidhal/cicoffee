@@ -6,10 +6,7 @@ import com.softkall.cicoffe.model.entity.Member;
 import com.softkall.cicoffe.model.entity.Session;
 import com.softkall.cicoffe.model.entity.SessionParticipant;
 import com.softkall.cicoffe.model.entity.Team;
-import com.softkall.cicoffe.model.repository.MemberRepository;
-import com.softkall.cicoffe.model.repository.SessionParticipantRepository;
-import com.softkall.cicoffe.model.repository.SessionRepository;
-import com.softkall.cicoffe.model.repository.TeamRepository;
+import com.softkall.cicoffe.model.repository.*;
 import com.softkall.cicoffe.service.CommunicationManager;
 import com.softkall.cicoffe.service.SessionService;
 import com.softkall.cicoffe.web.dto.input.CreateSessionDto;
@@ -43,6 +40,7 @@ public class SessionServiceImpl implements SessionService {
   private final MemberRepository memberRepository;
   private final TeamRepository teamRepository;
   private final SessionParticipantRepository sessionParticipantRepository;
+  private final OrderRepository orderRepository;
   private final CommunicationManager communicationManager;
   private final OneSignalNotificationService notificationService;
 
@@ -106,11 +104,15 @@ public class SessionServiceImpl implements SessionService {
             .removeIf(participant -> participant.getMember().getId().equals(memberId));
     session = sessionRepository.save(session);
     sessionParticipantRepository.deleteByMember_IdAndSession_Id(memberId, sessionId);
+    orderRepository.deleteAll(session.getOrders().stream()
+            .filter(order -> order.getMember().getId().equals(memberId))
+            .collect(Collectors.toList())
+    );
     return SessionDto.from(session);
   }
 
-    @Override
-    public SessionDto getById(UUID sessionId) {
+  @Override
+  public SessionDto getById(UUID sessionId) {
         return SessionDto.from(sessionRepository.getById(sessionId));
     }
 

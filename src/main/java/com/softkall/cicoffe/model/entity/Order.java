@@ -38,6 +38,6 @@ public class Order {
 
   @Fetch(value = FetchMode.SELECT)
   @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
   private Set<OrderItem> items;
 }
