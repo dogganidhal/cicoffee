@@ -150,10 +150,8 @@ public class AuthServiceImpl implements AuthService {
     );
 
     String resetUrl = String.format(
-            "%s://%s:%s/content/reset-password?code=%s",
-            webConfiguration.getProtocol(),
-            webConfiguration.getHost(),
-            webConfiguration.getPort(),
+            "%s/content/reset-password?code=%s",
+            webConfiguration.getServerUrl(),
             resetCode.getCode()
     );
     mailService.sendResetPassword(member.getEmail(), resetUrl);

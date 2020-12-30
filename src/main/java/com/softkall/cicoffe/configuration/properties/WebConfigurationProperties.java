@@ -13,7 +13,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties("cicoffee.web")
 public class WebConfigurationProperties {
-  private String protocol;
-  private String host;
-  private Integer port;
+  private String serverUrl;
 }

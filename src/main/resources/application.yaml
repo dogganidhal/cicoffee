@@ -7,7 +7,7 @@ spring:
 
 cicoffee:
   mail:
-    from: cicoffee@softkall.com
+    from: info@pausa-cafe.ga
   auth:
     jwt:
       expires-in: 3600

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db-postgresql-pausa-cafe-do-user-6882112-0.b.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+    username: doadmin
+    password: bs3b26l2l16i3xy1
+  mail:
+    host: in-v3.mailjet.com
+    port: 25
+    username: d480145375885acbbcbdf48e4c064cb3
+    password: d03fffb432ba66eb66311d285b99910e
+
+cicoffee:
+  auth:
+    jwt:
+      signing-key: W4c3EPAGUnUZqVIQwbaIMJHly9Cdp_66vKgKxL_n9oK2HOg98dNCNclhMID2wqBdY3A7YtAh01wpUjPXZ6PMocmPi67G932WAj_tNFb7QTOO5IZSqGaUKVw7Mpl_IDDFMNcUKASCfpyZs9sM4rM2cTDtDr7Mv1ibCjkdbyEG5Q6_R6crf41FhLlqQuSjnETEvhZoktDmAuU1J_ikpy-9vbQ55y80I5v279hf6YDIy0027EmCFoUteR4KfYeRKTPA7eOdly3biQgGZXtInF5gOiwbZKkFJ5EFulT2QtIne35YBQENeE5OQ0mDILnZb0uTdMcJTUhQ6H7c2NpJNO4NEA
+  web:
+    server-url: https://api.pausa-cafe.ga
