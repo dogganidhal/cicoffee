@@ -68,6 +68,7 @@ public class SessionServiceImpl implements SessionService {
                     .endDate(Timestamp.from(request.getEndDate().toInstant(ZoneOffset.UTC)))
                     .build()
             );
+
     communicationManager.notifyTeamOfSession(session);
     return SessionDto.from(session);
   }

@@ -15,7 +15,6 @@ import java.util.UUID;
 
 
 @Data
-@Builder
 public class CreateSessionDto {
   private LocalDateTime startDate;
   private LocalDateTime endDate;

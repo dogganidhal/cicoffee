@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -69,21 +70,27 @@ public class SessionServiceTest {
 
   @Test
   public void shouldSaveUTCDatesFromUTCLocalTimeZone() {
-    LocalDateTime localNow = LocalDateTime.now()
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime();
+    LocalDateTime startLocalDateTime = LocalDateTime.now();
+    LocalDateTime endLocalDateTime = LocalDateTime.now().plusMinutes(10);
+    Instant startInstant = startLocalDateTime.toInstant(ZoneOffset.UTC);
+    Instant endInstant = endLocalDateTime.toInstant(ZoneOffset.UTC);
 
     SessionDto session = sessionService.createSession(CreateSessionDto.builder()
-            .startDate(localNow)
-            .endDate(localNow.plusMinutes(10))
+            .startDate(startLocalDateTime)
+            .endDate(endLocalDateTime)
             .teamId(teamId)
             .build(),
             memberId
     );
 
     Assertions.assertEquals(
-            localNow.toInstant(ZoneOffset.UTC).getEpochSecond(),
+            startInstant.getEpochSecond(),
             session.getStartDate().toInstant(ZoneOffset.UTC).getEpochSecond()
+    );
+
+    Assertions.assertEquals(
+            endInstant.getEpochSecond(),
+            session.getEndDate().toInstant(ZoneOffset.UTC).getEpochSecond()
     );
   }
 
@@ -92,8 +99,8 @@ public class SessionServiceTest {
           @Autowired MemberRepository memberRepository,
           @Autowired TeamRepository teamRepository
   ) {
-    memberRepository.deleteAll();
-    teamRepository.deleteAll();
+//    memberRepository.deleteById(memberId);
+//    teamRepository.deleteById(teamId);
   }
 
 }

@@ -1,16 +1,15 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:test
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://92.94.210.134:45432/cicoffee
+    username: admin
+    password: supersecret
   mail:
     host: ""
   flyway:
-    locations: classpath:/db/migration/h2
-  jpa:
-    hibernate:
-      ddl-auto: none
+    locations: classpath:/db/migration/postgres
 
 cicoffee:
   auth:
     jwt:
       signing-key: ""
+
