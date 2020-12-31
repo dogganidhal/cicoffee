@@ -1,5 +1,4 @@
 spring:
-  jpa.properties.hibernate.jdbc.time_zone: UTC
   datasource:
     url: jdbc:postgresql://92.94.210.134:45432/cicoffee
     username: admin
