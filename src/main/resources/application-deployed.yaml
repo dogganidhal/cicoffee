@@ -8,6 +8,8 @@ spring:
     port: 25
     username: d480145375885acbbcbdf48e4c064cb3
     password: d03fffb432ba66eb66311d285b99910e
+  flyway:
+    locations: classpath:/db/migration/postgres
 
 cicoffee:
   auth:

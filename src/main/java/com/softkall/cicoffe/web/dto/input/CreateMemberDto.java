@@ -1,5 +1,6 @@
 package com.softkall.cicoffe.web.dto.input;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
